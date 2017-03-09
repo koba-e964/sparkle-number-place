@@ -1,7 +1,7 @@
 # sparkle-number-place
 
 ## Dependencies
-You need `docker` to run this server
+You need `docker` to run this server.
 
 ## How to run
 ```
@@ -18,7 +18,8 @@ $ docker-compose up -d
 Creating sparklenumberplace_sudoku-server_1
 $ docker ps
 CONTAINER ID        IMAGE                              COMMAND                  CREATED              STATUS              PORTS                            NAMES
-9bedf67e62bd        sparklenumberplace_sudoku-server   "nginx -g 'daemon ..."   About a minute ago   Up About a minute   443/tcp, 0.0.0.0:32770->80/tcp   sparklenumberplace_sudoku-server_1
-
+9bedf67e62bd        sparklenumberplace_sudoku-server   "nginx -g 'daemon ..."   About a minute ago   Up About a minute   443/tcp, 0.0.0.0:32768->80/tcp   sparklenumberplace_sudoku-server_1
+$ docker ps --format "{{.Ports}}"
+443/tcp, 0.0.0.0:32768->80/tcp
 ```
-You can view the page by accessing `0.0.0.0:32770`.
+You can view the page by accessing `0.0.0.0:32768`.
