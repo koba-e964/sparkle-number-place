@@ -29,4 +29,8 @@ RUN cd /tmp/minisat && \
 RUN cd /usr/local/bin && \
     ln -s minisat22_core minisat
 
+EXPOSE 80 80
+
 COPY files/gen-cnf.rb /opt/nginx/files/gen-cnf.rb
+COPY files/index.html /usr/share/nginx/html/index.html
+COPY files/nginx.conf /etc/nginx/nginx.conf
