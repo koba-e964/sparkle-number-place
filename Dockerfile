@@ -29,19 +29,16 @@ RUN cd /tmp/minisat && \
 
 # install
 RUN cd /usr/local/bin && \
-    ln -s minisat22_core minisat
-
-
-# Ref: https://github.com/senyoltw/docker-difff/blob/master/Dockerfile
-RUN sed -ri 's/#LoadModule cgid_module/LoadModule cgid_module/g; \ 
-             s/Options Indexes FollowSymLinks/Options Indexes FollowSymLinks ExecCGI/g; \
-             s/#AddHandler cgi-script .cgi/AddHandler cgi-script .rb .pl .cgi/g' /usr/local/apache2/conf/httpd.conf
-
-
-EXPOSE 80 80
+    ln -s minisat22_core minisat && \
+    chmod a+x minisat
 
 COPY files/gen-cnf.rb /usr/local/apache2/htdocs/gen-cnf.rb
 RUN chmod a+x /usr/local/apache2/htdocs/gen-cnf.rb
 COPY files/handler.rb /usr/local/apache2/htdocs/handler.rb
 RUN chmod a+x /usr/local/apache2/htdocs/handler.rb
 COPY files/index.html /usr/local/apache2/htdocs/index.html
+COPY files/start-server.sh /usr/local/apache2/htdocs/start-server.sh
+RUN chmod a+x /usr/local/apache2/htdocs/start-server.sh
+
+
+CMD ["/usr/local/apache2/htdocs/start-server.sh"]

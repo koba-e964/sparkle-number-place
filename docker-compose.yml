@@ -1,4 +1,6 @@
-sudoku-server:
+web:
   build: .
   ports:
     - "80"
+  environment:
+    - PORT=80
