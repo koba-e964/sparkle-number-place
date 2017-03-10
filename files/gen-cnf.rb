@@ -10,8 +10,6 @@
 # 0 3 0 4 0 8 0 5 6
 # 0 0 0 5 0 3 0 0 0
 
-rust = false
-
 board = (0 ... 9).map{|v| gets.split.map(&:to_i)}
 
 # 0 is regarded as a blank cell
@@ -74,8 +72,10 @@ cnf = []
 
 # Allow pipes
 
-tmp_infile = "/tmp/sat-interm.cnf"
-tmp_outfile = "/tmp/sat-output.out"
+
+nonce = format("%08x", rand(2**32))
+tmp_infile = "/tmp/sat-interm-#{nonce}.cnf"
+tmp_outfile = "/tmp/sat-output-#{nonce}.out"
 
 open(tmp_infile, "w") {|fp|
   fp.puts "p cnf"
@@ -86,7 +86,7 @@ open(tmp_infile, "w") {|fp|
 }
 
 # invoke minisat
-system("minisat#{rust ? "-rust" : ""} #{tmp_infile} #{tmp_outfile} >/dev/null")
+system("minisat #{tmp_infile} #{tmp_outfile} >/dev/null")
 
 open(tmp_outfile, "r") {|fp|
   fp.gets
@@ -103,3 +103,5 @@ open(tmp_outfile, "r") {|fp|
     puts row.join(' ')
   }
 }
+File.delete(tmp_infile)
+File.delete(tmp_outfile)

@@ -30,7 +30,7 @@
 // http://raining.bear-life.com/jquery/ajax%E3%82%92%E4%BD%BF%E7%94%A8%E3%81%97%E3%81%A6post%E9%80%81%E4%BF%A1%E3%81%A7%E3%83%87%E3%83%BC%E3%82%BF%E5%8F%96%E5%BE%97
 function onSubmit() {
   var url = "handler.rb";
-  var input = document.getElementsByName("sudoku")[0].input.textContent;
+  var input = document.getElementsByName("sudoku")[0].input.value;
   document.getElementsByName("sudoku")[0].output.textContent = "Processing...";
   $.ajax({
             type: "POST",
