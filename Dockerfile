@@ -29,8 +29,7 @@ RUN cd /tmp/minisat && \
 
 # install
 RUN cd /usr/local/bin && \
-    ln -s minisat22_core minisat && \
-    chmod a+x minisat
+    ln -s minisat22_core minisat
 
 COPY files/gen-cnf.rb /usr/local/apache2/htdocs/gen-cnf.rb
 RUN chmod a+x /usr/local/apache2/htdocs/gen-cnf.rb
@@ -39,6 +38,5 @@ RUN chmod a+x /usr/local/apache2/htdocs/handler.rb
 COPY files/index.html /usr/local/apache2/htdocs/index.html
 COPY files/start-server.sh /usr/local/apache2/htdocs/start-server.sh
 RUN chmod a+x /usr/local/apache2/htdocs/start-server.sh
-
 
 CMD ["/usr/local/apache2/htdocs/start-server.sh"]
