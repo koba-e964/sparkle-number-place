@@ -27,24 +27,21 @@
 サーバー側で数独を解いています。実装はSATソルバーに投げるだけです。
 </body>
 <script language="javascript">
-//http://www.gesource.jp/programming/javascript/20060505.html
+// http://raining.bear-life.com/jquery/ajax%E3%82%92%E4%BD%BF%E7%94%A8%E3%81%97%E3%81%A6post%E9%80%81%E4%BF%A1%E3%81%A7%E3%83%87%E3%83%BC%E3%82%BF%E5%8F%96%E5%BE%97
 function onSubmit() {
   var url = "handler.rb";
   var input = document.getElementsByName("sudoku")[0].input.textContent;
+  document.getElementsByName("sudoku")[0].output.textContent = "Processing...";
   $.ajax({
             type: "POST",
             url: url,
             data: {
                 "input": input
             },
-            success: function(j_data){
-  				document.getElementsByName("sudoku")[0].output.textContent = "Success";
- 				
-                // 処理を記述
- 
+            success: function(j_data){ // j_data is a string received from the CGI
+  				document.getElementsByName("sudoku")[0].output.textContent = j_data;
             }
         });
-  document.getElementsByName("sudoku")[0].output.textContent = "EndOfReading";
 }
 </script>
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>

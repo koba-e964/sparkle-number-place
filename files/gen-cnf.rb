@@ -1,3 +1,4 @@
+#!/usr/bin/env ruby
 # Reads 9 * 9 board in the format like:
 # 0 2 0 6 5 7 0 8 4
 # 0 0 6 0 8 0 9 0 0
@@ -85,7 +86,7 @@ open(tmp_infile, "w") {|fp|
 }
 
 # invoke minisat
-system("minisat#{rust ? "-rust" : ""} #{tmp_infile} #{tmp_outfile}")
+system("minisat#{rust ? "-rust" : ""} #{tmp_infile} #{tmp_outfile} >/dev/null")
 
 open(tmp_outfile, "r") {|fp|
   fp.gets

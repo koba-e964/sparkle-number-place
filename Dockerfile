@@ -41,6 +41,7 @@ RUN sed -ri 's/#LoadModule cgid_module/LoadModule cgid_module/g; \
 EXPOSE 80 80
 
 COPY files/gen-cnf.rb /usr/local/apache2/htdocs/gen-cnf.rb
+RUN chmod a+x /usr/local/apache2/htdocs/gen-cnf.rb
 COPY files/handler.rb /usr/local/apache2/htdocs/handler.rb
 RUN chmod a+x /usr/local/apache2/htdocs/handler.rb
 COPY files/index.html /usr/local/apache2/htdocs/index.html
