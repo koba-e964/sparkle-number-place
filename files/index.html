@@ -1,1 +1,51 @@
-Test Document
+<html>
+<title>
+数独ソルバー
+</title>
+<body>
+<h1>数独ソルバー</h1>
+<form name="sudoku" method="post" onsubmit="onSubmit(); return false;" >
+問題(空きマスは0、それ以外は1から9までの値を入れる)<br>
+<textarea name="input" rows=10 cols=20>
+0 0 0 1 0 0 0 0 0
+0 8 0 0 0 0 0 1 9
+5 0 0 3 2 0 0 6 8
+0 6 0 0 5 3 0 0 0
+0 0 4 0 0 0 3 0 0
+0 0 0 8 1 0 0 5 0
+2 7 0 0 9 5 0 0 4
+6 9 0 0 0 0 0 8 0
+0 0 0 0 0 8 0 0 0
+</textarea>
+<input type="submit" value="解く"/>
+<br>
+答え
+<textarea name="output" rows=10 cols=20 readonly="readonly">
+</textarea>
+</form>
+<h2>裏側</h2>
+サーバー側で数独を解いています。実装はSATソルバーに投げるだけです。
+</body>
+<script language="javascript">
+//http://www.gesource.jp/programming/javascript/20060505.html
+function onSubmit() {
+  var url = "handler.rb";
+  var input = document.getElementsByName("sudoku")[0].input.textContent;
+  $.ajax({
+            type: "POST",
+            url: url,
+            data: {
+                "input": input
+            },
+            success: function(j_data){
+  				document.getElementsByName("sudoku")[0].output.textContent = "Success";
+ 				
+                // 処理を記述
+ 
+            }
+        });
+  document.getElementsByName("sudoku")[0].output.textContent = "EndOfReading";
+}
+</script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+</html>
