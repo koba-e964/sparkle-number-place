@@ -8,3 +8,12 @@ services:
       - "80"
     environment:
       - PORT=80
+  lighttpd:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.lighttpd
+    ports:
+      - "80"
+    environment:
+      - PORT=80
+  
