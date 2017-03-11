@@ -1,6 +1,10 @@
-web:
-  build: .
-  ports:
-    - "80"
-  environment:
-    - PORT=80
+version: "3"
+services:
+  httpd:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.httpd
+    ports:
+      - "80"
+    environment:
+      - PORT=80
