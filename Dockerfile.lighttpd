@@ -27,10 +27,11 @@ RUN cd /tmp/minisat && \
     ln -s /usr/local/bin/minisat22_core /usr/local/bin/minisat && \
     cd / && rm -r /tmp/minisat
 
-COPY files/lighttpd.conf /tmp/lighttpd.conf
+COPY files/lighttpd.conf /opt/lighttpd.conf
 ADD files/gen-cnf.rb files/handler.rb files/index.html /var/www/
-RUN chmod a+x /var/www/gen-cnf.rb /var/www/handler.rb
+COPY start-lighttpd.sh /opt/start-lighttpd.sh
+RUN chmod a+x /var/www/gen-cnf.rb /var/www/handler.rb /opt/start-lighttpd.sh
 
 EXPOSE 80
 
-CMD ["lighttpd", "-D", "-f", "/tmp/lighttpd.conf"]
+CMD /opt/start-lighttpd.sh
