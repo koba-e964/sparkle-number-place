@@ -75,15 +75,15 @@ public class NumberPlayScanner{
     Imgproc.drawContours(contourDetectedImage, this.contours, -1, new Scalar(0, 0, 255), 3);
     writeImage(contourDetectedImage, "output/detectedContours.png");
     
-    System.out.println(String.format("%d\n", this.contours.size()));
+    System.out.printf("\ncontours: %d\n", this.contours.size());
     for(int i = 0; i < this.contours.size(); i++){
-      System.out.println("" + this.contours.get(i).dump());
+      this.contours.get(i).dump().toString();
     }
     
     //currently assuming that there is only one contour in the scene.
     this.sudokuPoints = this.contours.get(0).toList();
-    for(int i = 0; i < this.sudokuPoints.size(); i ++){
-      System.out.println(String.format(("x:%f, y:%f"), this.sudokuPoints.get(i).x, this.sudokuPoints.get(i).y));
+    for(int i = 0; i < this.sudokuPoints.size(); i++){
+      System.out.printf(("x:%f, y:%f\n"), this.sudokuPoints.get(i).x, this.sudokuPoints.get(i).y);
     }
   }
   
@@ -136,7 +136,7 @@ public class NumberPlayScanner{
   
   private void writeImage(Mat outputImage, String path){
     //debug process
-    System.out.println(String.format("Write %s\n", path));
+    System.out.printf("Write %s\n", path);
     Imgcodecs.imwrite(path, outputImage);
   }
   
