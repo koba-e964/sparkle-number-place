@@ -77,7 +77,7 @@ public class NumberPlayScanner{
     
     System.out.printf("\ncontours: %d\n", this.contours.size());
     for(int i = 0; i < this.contours.size(); i++){
-      this.contours.get(i).dump().toString();
+      System.out.printf("\n" + this.contours.get(i).dump().toString() + "\n\n");
     }
     
     //currently assuming that there is only one contour in the scene.
