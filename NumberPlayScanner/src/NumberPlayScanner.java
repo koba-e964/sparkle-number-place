@@ -32,14 +32,14 @@ public class NumberPlayScanner{
     this.binImage = new Mat();
     this.boundaryDeletedImage = new Mat();
     
-    contours = new ArrayList<MatOfPoint>();
-    hierarchy = new Mat();
+    this.contours = new ArrayList<MatOfPoint>();
+    this.hierarchy = new Mat();
     
-    detectedPoints = new MatOfKeyPoint();
+    this.detectedPoints = new MatOfKeyPoint();
   }
   
   public void run(){
-    binImage();
+    imageBinarization();
     
     contourDetection();
     
@@ -48,17 +48,17 @@ public class NumberPlayScanner{
     divideCells();
   }
   
-  private void binImage(){
+  private void imageBinarization(){
     Imgproc.cvtColor(this.image, grayscaleImage, Imgproc.COLOR_RGB2GRAY);
     
     //obtain an image easier to do image processing by gaussian blur
-    Imgproc.GaussianBlur(grayscaleImage, grayscaleImage, new Size(5, 5), 1, 1);
+    Imgproc.GaussianBlur(this.grayscaleImage, this.grayscaleImage, new Size(5, 5), 1, 1);
     
     //Adaptive thresholding is used. Need to find most appropriate number for the last two ints of inputs
-    Imgproc.adaptiveThreshold(grayscaleImage, this.binImage, 255,
+    Imgproc.adaptiveThreshold(this.grayscaleImage, this.binImage, 255,
                               Imgproc.ADAPTIVE_THRESH_GAUSSIAN_C, Imgproc.THRESH_BINARY, 7, 10);
     Core.bitwise_not(this.binImage, this.binImage);
-    Imgproc.dilate(binImage, binImage, new Mat());
+    Imgproc.dilate(this.binImage, this.binImage, new Mat());
     
     //debug process for binary image
     writeImage(this.grayscaleImage, "output/grayscale.png");
@@ -68,22 +68,22 @@ public class NumberPlayScanner{
   private void contourDetection(){
     Mat contourDetectedImage = this.image.clone();
     //copy and paste code, working fine currently. Should look into it to find better suited logic
-    Imgproc.findContours(this.binImage, contours, hierarchy,
+    Imgproc.findContours(this.binImage, this.contours, this.hierarchy,
                          Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_TC89_L1);
     
     //debug process for contour detection
-    Imgproc.drawContours(contourDetectedImage, contours, -1, new Scalar(0, 0, 255), 3);
+    Imgproc.drawContours(contourDetectedImage, this.contours, -1, new Scalar(0, 0, 255), 3);
     writeImage(contourDetectedImage, "output/detectedContours.png");
     
-    System.out.println(String.format("%d\n", contours.size()));
-    for(int i = 0; i < contours.size(); i++){
-      System.out.println("" + contours.get(i).dump());
+    System.out.println(String.format("%d\n", this.contours.size()));
+    for(int i = 0; i < this.contours.size(); i++){
+      System.out.println("" + this.contours.get(i).dump());
     }
     
     //currently assuming that there is only one contour in the scene.
-    sudokuPoints = contours.get(0).toList();
-    for(int i = 0; i < sudokuPoints.size(); i ++){
-      System.out.println(String.format(("x:%f, y:%f"), sudokuPoints.get(i).x, sudokuPoints.get(i).y));
+    this.sudokuPoints = this.contours.get(0).toList();
+    for(int i = 0; i < this.sudokuPoints.size(); i ++){
+      System.out.println(String.format(("x:%f, y:%f"), this.sudokuPoints.get(i).x, this.sudokuPoints.get(i).y));
     }
   }
   
@@ -95,23 +95,23 @@ public class NumberPlayScanner{
   //Delete boundaries in order not to hinder number recognition later
   private void boundaryDeletion(){
     Mat mask = new Mat();
-    boundaryDeletedImage = binImage.clone();
+    this.boundaryDeletedImage = this.binImage.clone();
     
-    Imgproc.floodFill(boundaryDeletedImage, mask, sudokuPoints.get(0), new Scalar(0,0,0));
+    Imgproc.floodFill(this.boundaryDeletedImage, mask, this.sudokuPoints.get(0), new Scalar(0,0,0));
     
-    writeImage(boundaryDeletedImage, "output/boundaryDeletedImage.png");
+    writeImage(this.boundaryDeletedImage, "output/boundaryDeletedImage.png");
   }
   
   //divide the detected board into 9x9 sudoku problem to detect numbers in it
   private void divideCells(){
-    Core.bitwise_not(boundaryDeletedImage, boundaryDeletedImage);
+    Core.bitwise_not(this.boundaryDeletedImage, this.boundaryDeletedImage);
     double x1 = Math.pow(10, 10), x2 = 0, y1 = Math.pow(10, 10), y2 = 0;
     
-    for(int i = 0; i < sudokuPoints.size(); i++){
-      x1 = Math.min(x1, sudokuPoints.get(i).x);
-      x2 = Math.max(x2, sudokuPoints.get(i).x);
-      y1 = Math.min(y1, sudokuPoints.get(i).y);
-      y2 = Math.max(y2, sudokuPoints.get(i).y);
+    for(int i = 0; i < this.sudokuPoints.size(); i++){
+      x1 = Math.min(x1, this.sudokuPoints.get(i).x);
+      x2 = Math.max(x2, this.sudokuPoints.get(i).x);
+      y1 = Math.min(y1, this.sudokuPoints.get(i).y);
+      y2 = Math.max(y2, this.sudokuPoints.get(i).y);
     }
     double width = (x2 - x1) / 9, height = (y2 - y1) / 9;
     
@@ -125,7 +125,7 @@ public class NumberPlayScanner{
         
         String filename = "output/trim/cell" + (j+1) + "x" + (i+1) + ".png";
         //image trimming by Rectangle r
-        Mat dividedImage = new Mat(boundaryDeletedImage, r);
+        Mat dividedImage = new Mat(this.boundaryDeletedImage, r);
         Imgcodecs.imwrite(filename, dividedImage);
         upperLeft.x = cell.x;
       }

@@ -1,5 +1,5 @@
 import org.opencv.core.Core;
-import org.opencv.imgcodecs.*;
+import org.opencv.imgcodecs.Imgcodecs;
 
 
 public class Main {
