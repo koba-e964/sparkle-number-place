@@ -1,0 +1,17 @@
+*~
+*.txt
+
+.DS_Store
+
+*.png
+
+/bin/*
+
+/data/*
+!/data/sudoku.png
+
+/output/*
+
+!/output/trim/
+/output/trim/*
+!/output/trim/.gitkeep
